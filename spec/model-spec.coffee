@@ -36,3 +36,20 @@ describe "Model", ->
       model = new TestModel
       defaultValue = 2
       expect(model.foo).toBe 2
+
+    it "associates declared properties with $-prefixed behavior accessors", ->
+      class TestModel extends Model
+        @properties 'foo', 'bar'
+
+      model = new TestModel(foo: 1, bar: 2)
+
+      fooValues = []
+      barValues = []
+      model.$foo.onValue (v) -> fooValues.push(v)
+      model.$bar.onValue (v) -> barValues.push(v)
+
+      model.foo = 10
+      model.set(foo: 20, bar: 21)
+
+      # expect(fooValues).toEqual [1, 10, 20]
+      expect(barValues).toEqual [2, 21]

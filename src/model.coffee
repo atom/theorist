@@ -1,3 +1,5 @@
+{Behavior} = require 'emissary'
+
 module.exports =
 class Model
   @properties: (args...) ->
@@ -14,8 +16,21 @@ class Model
       get: -> @get(name)
       set: (value) -> @set(name, value)
 
+    Object.defineProperty @prototype, "$#{name}",
+      get: -> @behavior(name)
+
   @hasDeclaredProperty: (name) ->
     @declaredProperties?.hasOwnProperty(name)
+
+  declaredPropertyValues: null
+  behaviors: null
+
+  constructor: (params) ->
+    for propertyName of @constructor.declaredProperties
+      if params.hasOwnProperty(propertyName)
+        @set(propertyName, params[propertyName])
+      else
+        @setDefault(propertyName)
 
   setDefault: (name) ->
     defaultValue = @constructor.declaredProperties?[name]
@@ -31,17 +46,20 @@ class Model
       @[name]
 
   set: (name, value) ->
-    if @constructor.hasDeclaredProperty(name)
-      @declaredPropertyValues ?= {}
-      @declaredPropertyValues[name] = value
+    if typeof name is 'object'
+      properties = name
+      @set(name, value) for name, value of properties
+      properties
     else
-      @[name] = value
-
-  declaredPropertyValues: null
-
-  constructor: (params) ->
-    for propertyName of @constructor.declaredProperties
-      if params.hasOwnProperty(propertyName)
-        @set(propertyName, params[propertyName])
+      if @constructor.hasDeclaredProperty(name)
+        @declaredPropertyValues ?= {}
+        @declaredPropertyValues[name] = value
       else
-        @setDefault(propertyName)
+        @[name] = value
+
+      @behaviors?[name]?.emitValue(value)
+      value
+
+  behavior: (name) ->
+    @behaviors ?= {}
+    @behaviors[name] ?= new Behavior(@get(name))
