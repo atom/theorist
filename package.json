@@ -1,23 +1,23 @@
 {
-  "name": "reactant",
+  "name": "reactionary",
   "version": "0.0.0",
-  "description": "A conflict-free replicated object library.",
-  "main": "./lib/reactant",
+  "description": "A reactive model toolkit.",
+  "main": "./lib/reactionary",
   "scripts": {
     "prepublish": "grunt clean lint coffee",
     "test": "grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/atom/reactant.git"
+    "url": "https://github.com/atom/reactionary.git"
   },
   "bugs": {
-    "url": "https://github.com/atom/reactant/issues"
+    "url": "https://github.com/atom/reactionary/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/atom/reactant/raw/master/LICENSE.md"
+      "url": "http://github.com/atom/reactionary/raw/master/LICENSE.md"
     }
   ],
   "dependencies": {
