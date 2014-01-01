@@ -27,6 +27,7 @@ class Model
 
   declaredPropertyValues: null
   behaviors: null
+  alive: true
 
   constructor: (params) ->
     for propertyName of @constructor.declaredProperties
@@ -66,3 +67,13 @@ class Model
   behavior: (name) ->
     @behaviors ?= {}
     @behaviors[name] ?= new Behavior(@get(name))
+
+  destroy: ->
+    @alive = false
+    @unsubscribe()
+    @destroyed?()
+    @emit 'destroyed'
+
+  isAlive: -> @alive
+
+  isDestroyed: -> not @isAlive()

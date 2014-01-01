@@ -53,3 +53,25 @@ describe "Model", ->
 
       # expect(fooValues).toEqual [1, 10, 20]
       expect(barValues).toEqual [2, 21]
+
+  describe "::destroy()", ->
+    it "marks the model as no longer alive, unsubscribes, calls an optional destroyed hook, and emits a 'destroyed' event", ->
+      class TestModel extends Model
+        destroyed: -> @destroyedCalled = true
+
+      emitter = new Model
+      model = new TestModel
+      model.subscribe emitter, 'foo', ->
+      model.on 'destroyed', destroyedHandler = jasmine.createSpy("destroyedHandler")
+
+      expect(model.isAlive()).toBe true
+      expect(model.isDestroyed()).toBe false
+      expect(emitter.getSubscriptionCount()).toBe 1
+
+      model.destroy()
+
+      expect(model.isAlive()).toBe false
+      expect(model.isDestroyed()).toBe true
+      expect(model.destroyedCalled).toBe true
+      expect(destroyedHandler.callCount).toBe 1
+      expect(emitter.getSubscriptionCount()).toBe 0
