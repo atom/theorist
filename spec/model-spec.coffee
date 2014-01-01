@@ -55,6 +55,21 @@ describe "Model", ->
       expect(fooValues).toEqual [1, 10, 20]
       expect(barValues).toEqual [2, 21]
 
+  describe "instance ids", ->
+    it "assigns a unique id to each model instance", ->
+      model1 = new Model
+      model2 = new Model
+
+      expect(model1.id).toBeDefined()
+      expect(model2.id).toBeDefined()
+      expect(model1.id).not.toBe model2.id
+
+    it "honors explicit id assignments in the params hash", ->
+      model1 = new Model(id: 22)
+      model2 = new Model(id: 33)
+      expect(model1.id).toBe 22
+      expect(model2.id).toBe 33
+
   describe "::destroy()", ->
     it "marks the model as no longer alive, unsubscribes, calls an optional destroyed hook, and emits a 'destroyed' event", ->
       class TestModel extends Model

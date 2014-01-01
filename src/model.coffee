@@ -1,6 +1,8 @@
 {Behavior, Subscriber, Emitter} = require 'emissary'
 isEqual = require 'tantamount'
 
+nextInstanceId = 1
+
 module.exports =
 class Model
   Subscriber.includeInto(this)
@@ -31,11 +33,15 @@ class Model
   alive: true
 
   constructor: (params) ->
+    @assignId(params?.id)
     for propertyName of @constructor.declaredProperties
       if params.hasOwnProperty(propertyName)
         @set(propertyName, params[propertyName])
       else
         @setDefault(propertyName)
+
+  assignId: (id) ->
+    @id ?= id ? nextInstanceId++
 
   setDefault: (name) ->
     defaultValue = @constructor.declaredProperties?[name]
