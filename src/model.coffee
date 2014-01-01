@@ -1,7 +1,10 @@
-{Behavior} = require 'emissary'
+{Behavior, Subscriber, Emitter} = require 'emissary'
 
 module.exports =
 class Model
+  Subscriber.includeInto(this)
+  Emitter.includeInto(this)
+
   @properties: (args...) ->
     if typeof args[0] is 'object'
       @property name, defaultValue for name, defaultValue of args[0]
