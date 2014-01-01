@@ -1,4 +1,5 @@
 {Behavior, Subscriber, Emitter} = require 'emissary'
+isEqual = require 'tantamount'
 
 module.exports =
 class Model
@@ -41,10 +42,10 @@ class Model
     defaultValue = defaultValue.call(this) if typeof defaultValue is 'function'
     @set(name, defaultValue)
 
-  get: (name) ->
+  get: (name, suppressDefault) ->
     if @constructor.hasDeclaredProperty(name)
       @declaredPropertyValues ?= {}
-      @setDefault(name) unless @declaredPropertyValues.hasOwnProperty(name)
+      @setDefault(name) unless suppressDefault or @declaredPropertyValues.hasOwnProperty(name)
       @declaredPropertyValues[name]
     else
       @[name]
@@ -55,13 +56,13 @@ class Model
       @set(name, value) for name, value of properties
       properties
     else
-      if @constructor.hasDeclaredProperty(name)
-        @declaredPropertyValues ?= {}
-        @declaredPropertyValues[name] = value
-      else
-        @[name] = value
-
-      @behaviors?[name]?.emitValue(value)
+      unless isEqual(@get(name, true), value)
+        if @constructor.hasDeclaredProperty(name)
+          @declaredPropertyValues ?= {}
+          @declaredPropertyValues[name] = value
+        else
+          @[name] = value
+        @behaviors?[name]?.emitValue(value)
       value
 
   behavior: (name) ->

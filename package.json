@@ -21,7 +21,8 @@
     }
   ],
   "dependencies": {
-    "emissary": "~0.28.0"
+    "emissary": "~0.28.0",
+    "tantamount": "~0.8.0"
   },
   "devDependencies": {
     "coffee-script": "~1.6.3",

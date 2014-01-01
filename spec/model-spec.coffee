@@ -50,8 +50,9 @@ describe "Model", ->
 
       model.foo = 10
       model.set(foo: 20, bar: 21)
+      model.foo = 20
 
-      # expect(fooValues).toEqual [1, 10, 20]
+      expect(fooValues).toEqual [1, 10, 20]
       expect(barValues).toEqual [2, 21]
 
   describe "::destroy()", ->
