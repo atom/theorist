@@ -88,7 +88,8 @@ describe "Model", ->
   describe "::destroy()", ->
     it "marks the model as no longer alive, unsubscribes, calls an optional destroyed hook, and emits a 'destroyed' event", ->
       class TestModel extends Model
-        destroyed: -> @destroyedCalled = true
+        destroyedCallCount: 0
+        destroyed: -> @destroyedCallCount++
 
       emitter = new Model
       model = new TestModel
@@ -100,9 +101,10 @@ describe "Model", ->
       expect(emitter.getSubscriptionCount()).toBe 1
 
       model.destroy()
+      model.destroy()
 
       expect(model.isAlive()).toBe false
       expect(model.isDestroyed()).toBe true
-      expect(model.destroyedCalled).toBe true
+      expect(model.destroyedCallCount).toBe 1
       expect(destroyedHandler.callCount).toBe 1
       expect(emitter.getSubscriptionCount()).toBe 0

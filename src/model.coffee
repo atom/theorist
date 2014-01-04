@@ -102,6 +102,7 @@ class Model
         @behaviors[name] = @constructor.evaluateDeclaredBehavior(name, this)
 
   destroy: ->
+    return unless @isAlive()
     @alive = false
     @unsubscribe()
     @destroyed?()
