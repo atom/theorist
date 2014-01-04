@@ -1,3 +1,4 @@
+{Behavior} = require 'emissary'
 Model = require '../src/model'
 
 describe "Model", ->
@@ -62,13 +63,27 @@ describe "Model", ->
         @behavior 'bar', -> @$foo.map (v) -> v + 1
 
       model = new TestModel
+
+      expect(model.bar).toBe 1
       values = []
       model.$bar.onValue (v) -> values.push(v)
 
-      expect(model.bar).toBe 1
       model.foo = 10
       expect(model.bar).toBe 11
       expect(values).toEqual [1, 11]
+
+    it "releases behaviors when the model is destroyed", ->
+      behavior = new Behavior(0)
+      class TestModel extends Model
+        @property 'foo', 0
+        @behavior 'bar', -> behavior
+
+      model = new TestModel
+      model.bar # force retention of behavior
+
+      expect(behavior.retainCount).toBeGreaterThan 0
+      model.destroy()
+      expect(behavior.retainCount).toBe 0
 
   describe "instance ids", ->
     it "assigns a unique id to each model instance", ->

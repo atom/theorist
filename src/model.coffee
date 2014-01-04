@@ -97,15 +97,16 @@ class Model
       behavior
     else
       if @constructor.hasDeclaredProperty(name)
-        @behaviors[name] = new Behavior(@get(name))
+        @behaviors[name] = new Behavior(@get(name)).retain()
       else if @constructor.hasDeclaredBehavior(name)
-        @behaviors[name] = @constructor.evaluateDeclaredBehavior(name, this)
+        @behaviors[name] = @constructor.evaluateDeclaredBehavior(name, this).retain()
 
   destroy: ->
     return unless @isAlive()
     @alive = false
-    @unsubscribe()
     @destroyed?()
+    @unsubscribe()
+    behavior.release() for name, behavior of @behaviors
     @emit 'destroyed'
 
   isAlive: -> @alive
