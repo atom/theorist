@@ -35,7 +35,7 @@ class Model
   constructor: (params) ->
     @assignId(params?.id)
     for propertyName of @constructor.declaredProperties
-      if params.hasOwnProperty(propertyName)
+      if params?.hasOwnProperty(propertyName)
         @set(propertyName, params[propertyName])
       else
         @setDefault(propertyName)
