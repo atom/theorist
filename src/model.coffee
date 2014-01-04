@@ -1,4 +1,5 @@
 {Behavior, Subscriber, Emitter} = require 'emissary'
+PropertyAccessors = require 'property-accessors'
 isEqual = require 'tantamount'
 
 nextInstanceId = 1
@@ -7,6 +8,7 @@ module.exports =
 class Model
   Subscriber.includeInto(this)
   Emitter.includeInto(this)
+  PropertyAccessors.includeInto(this)
 
   @properties: (args...) ->
     if typeof args[0] is 'object'
@@ -18,21 +20,21 @@ class Model
     @declaredProperties ?= {}
     @declaredProperties[name] = defaultValue
 
-    Object.defineProperty @prototype, name,
+    @::accessor name,
       get: -> @get(name)
       set: (value) -> @set(name, value)
 
-    Object.defineProperty @prototype, "$#{name}",
+    @::accessor "$#{name}",
       get: -> @behavior(name)
 
   @behavior: (name, definition) ->
     @declaredBehaviors ?= {}
     @declaredBehaviors[name] = definition
 
-    Object.defineProperty @prototype, name,
+    @::accessor name,
       get: -> @behavior(name).getValue()
 
-    Object.defineProperty @prototype, "$#{name}",
+    @::accessor "$#{name}",
       get: -> @behavior(name)
 
   @hasDeclaredProperty: (name) ->
