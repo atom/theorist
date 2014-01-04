@@ -1,23 +1,23 @@
 {
-  "name": "reactionary",
+  "name": "atomic-model",
   "version": "0.4.0",
   "description": "A reactive model toolkit.",
-  "main": "./lib/reactionary",
+  "main": "./lib/atomic-model",
   "scripts": {
     "prepublish": "grunt clean lint coffee",
     "test": "grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/atom/reactionary.git"
+    "url": "https://github.com/atom/atomic-model.git"
   },
   "bugs": {
-    "url": "https://github.com/atom/reactionary/issues"
+    "url": "https://github.com/atom/atomic-model/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/atom/reactionary/raw/master/LICENSE.md"
+      "url": "http://github.com/atom/atomic-model/raw/master/LICENSE.md"
     }
   ],
   "dependencies": {
