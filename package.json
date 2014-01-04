@@ -23,7 +23,8 @@
   "dependencies": {
     "emissary": "~0.28.0",
     "tantamount": "~0.8.0",
-    "property-accessors": "~0.1.0"
+    "property-accessors": "~0.1.0",
+    "delegato": "~0.4.0"
   },
   "devDependencies": {
     "coffee-script": "~1.6.3",

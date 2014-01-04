@@ -1,5 +1,6 @@
 {Behavior, Subscriber, Emitter} = require 'emissary'
 PropertyAccessors = require 'property-accessors'
+Delegator = require 'delegato'
 isEqual = require 'tantamount'
 
 nextInstanceId = 1
@@ -9,6 +10,7 @@ class Model
   Subscriber.includeInto(this)
   Emitter.includeInto(this)
   PropertyAccessors.includeInto(this)
+  Delegator.includeInto(this)
 
   @properties: (args...) ->
     if typeof args[0] is 'object'
