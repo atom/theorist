@@ -55,6 +55,21 @@ describe "Model", ->
       expect(fooValues).toEqual [1, 10, 20]
       expect(barValues).toEqual [2, 21]
 
+  describe ".behavior", ->
+    it "defines behavior accessors based on the given name and definition", ->
+      class TestModel extends Model
+        @property 'foo', 0
+        @behavior 'bar', -> @$foo.map (v) -> v + 1
+
+      model = new TestModel
+      values = []
+      model.$bar.onValue (v) -> values.push(v)
+
+      expect(model.bar).toBe 1
+      model.foo = 10
+      expect(model.bar).toBe 11
+      expect(values).toEqual [1, 11]
+
   describe "instance ids", ->
     it "assigns a unique id to each model instance", ->
       model1 = new Model

@@ -25,8 +25,24 @@ class Model
     Object.defineProperty @prototype, "$#{name}",
       get: -> @behavior(name)
 
+  @behavior: (name, definition) ->
+    @declaredBehaviors ?= {}
+    @declaredBehaviors[name] = definition
+
+    Object.defineProperty @prototype, name,
+      get: -> @behavior(name).getValue()
+
+    Object.defineProperty @prototype, "$#{name}",
+      get: -> @behavior(name)
+
   @hasDeclaredProperty: (name) ->
     @declaredProperties?.hasOwnProperty(name)
+
+  @hasDeclaredBehavior: (name) ->
+    @declaredBehaviors?.hasOwnProperty(name)
+
+  @evaluateDeclaredBehavior: (name, instance) ->
+    @declaredBehaviors[name].call(instance)
 
   declaredPropertyValues: null
   behaviors: null
@@ -73,7 +89,13 @@ class Model
 
   behavior: (name) ->
     @behaviors ?= {}
-    @behaviors[name] ?= new Behavior(@get(name))
+    if behavior = @behaviors[name]
+      behavior
+    else
+      if @constructor.hasDeclaredProperty(name)
+        @behaviors[name] = new Behavior(@get(name))
+      else if @constructor.hasDeclaredBehavior(name)
+        @behaviors[name] = @constructor.evaluateDeclaredBehavior(name, this)
 
   destroy: ->
     @alive = false
