@@ -24,13 +24,30 @@ class Collection extends Array
 
     @emit 'changed', {index, removedValues, insertedValues}
 
+  setLength: (length) ->
+    if length < @length
+      index = length
+      removedValues = @[index..]
+      insertedValues = []
+      @length = length
+      @emit 'changed', {index, removedValues, insertedValues}
+    else if length > @length
+      index = @length
+      removedValues = []
+      @length = length
+      insertedValues = @[index..]
+      @emit 'changed', {index, removedValues, insertedValues}
+
   isEqual: (other) ->
     (this is other) or isEqual((v for v in this), (v for v in other))
 
 CollectionProxyHandler =
   set: (target, name, value) ->
-    index = parseInt(name)
-    if isNaN(index)
-      target[name] = value
+    if name is 'length'
+      target.setLength(value)
     else
-      target.set(index, value)
+      index = parseInt(name)
+      if isNaN(index)
+        target[name] = value
+      else
+        target.set(index, value)
