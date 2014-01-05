@@ -1,23 +1,23 @@
 {
-  "name": "atomic-model",
+  "name": "theorist",
   "version": "0.6.0",
   "description": "A reactive model toolkit.",
-  "main": "./lib/atomic-model",
+  "main": "./lib/theorist",
   "scripts": {
     "prepublish": "grunt clean lint coffee",
     "test": "grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/atom/atomic-model.git"
+    "url": "https://github.com/atom/theorist.git"
   },
   "bugs": {
-    "url": "https://github.com/atom/atomic-model/issues"
+    "url": "https://github.com/atom/theorist/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/atom/atomic-model/raw/master/LICENSE.md"
+      "url": "http://github.com/atom/theorist/raw/master/LICENSE.md"
     }
   ],
   "dependencies": {
