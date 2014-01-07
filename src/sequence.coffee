@@ -3,12 +3,12 @@ isEqual = require 'tantamount'
 {Emitter} = require 'emissary'
 
 module.exports =
-class Collection extends Array
+class Sequence extends Array
   Emitter.includeInto(this)
 
   constructor: (elements...) ->
-    elements.__proto__ = Collection.prototype
-    return Proxy(elements, CollectionProxyHandler)
+    elements.__proto__ = Sequence.prototype
+    return Proxy(elements, SequenceProxyHandler)
 
   set: (index, value) ->
     if index >= @length
@@ -41,7 +41,7 @@ class Collection extends Array
   isEqual: (other) ->
     (this is other) or isEqual((v for v in this), (v for v in other))
 
-CollectionProxyHandler =
+SequenceProxyHandler =
   set: (target, name, value) ->
     if name is 'length'
       target.setLength(value)
