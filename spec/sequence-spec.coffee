@@ -91,3 +91,14 @@ describe "Sequence", ->
         removedValues: []
         insertedValues: ['X', 'Y', 'Z']
       }]
+
+  describe "::pop", ->
+    it "pops the sequence and emits a 'changed' event", ->
+      result = sequence.pop()
+      expect(result).toBe 'g'
+      expect(sequence).toEqual "abcdef".split('')
+      expect(changes).toEqual [{
+        index: 6
+        removedValues: ['g']
+        insertedValues: []
+      }]
