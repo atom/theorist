@@ -69,3 +69,14 @@ describe "Sequence", ->
     it "can iterate over the sequence with standard coffee-script syntax", ->
       values = (value for value in sequence)
       expect(values).toEqual sequence
+
+  describe "::splice", ->
+    it "splices the sequence and emits a 'changed' event", ->
+      result = sequence.splice(3, 2, 'D', 'E', 'F')
+      expect(result).toEqual ['d', 'e']
+      expect(sequence).toEqual "abcDEFfg".split('')
+      expect(changes).toEqual [{
+        index: 3
+        removedValues: ['d', 'e']
+        insertedValues: ['D', 'E', 'F']
+      }]

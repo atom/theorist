@@ -24,6 +24,11 @@ class Sequence extends Array
 
     @emit 'changed', {index, removedValues, insertedValues}
 
+  splice: (index, count, insertedValues...) ->
+    removedValues = super
+    @emit 'changed', {index, removedValues, insertedValues}
+    removedValues
+
   setLength: (length) ->
     if length < @length
       index = length
@@ -51,3 +56,10 @@ SequenceProxyHandler =
         target[name] = value
       else
         target.set(index, value)
+
+  get: (target, name) ->
+    # ::splice must be bound to actual target to avoid segfaults
+    if name is 'splice'
+      target.splice.bind(target)
+    else
+      target[name]
