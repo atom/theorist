@@ -113,3 +113,14 @@ describe "Sequence", ->
         removedValues: []
         insertedValues: ['X', 'Y', 'Z']
       }]
+
+  describe "::shift", ->
+    it "shifts from the sequence and emits a 'changed' event", ->
+      result = sequence.shift()
+      expect(result).toBe 'a'
+      expect(sequence).toEqual "bcdefg".split('')
+      expect(changes).toEqual [{
+        index: 0
+        removedValues: ['a']
+        insertedValues: []
+      }]

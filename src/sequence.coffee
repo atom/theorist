@@ -24,11 +24,11 @@ class Sequence extends Array
       insertedValues = [value]
       @[index] = value
 
-    @emit 'changed', {index, removedValues, insertedValues} unless @suppressChangeEvents
+    @emitChanged {index, removedValues, insertedValues}
 
   splice: (index, count, insertedValues...) ->
     removedValues = super
-    @emit 'changed', {index, removedValues, insertedValues}
+    @emitChanged {index, removedValues, insertedValues}
     removedValues
 
   push: (insertedValues...) ->
@@ -36,14 +36,21 @@ class Sequence extends Array
     @suppressChangeEvents = true
     result = super
     @suppressChangeEvents = false
-    @emit 'changed', {index, removedValues: [], insertedValues}
+    @emitChanged {index, removedValues: [], insertedValues}
     result
 
   unshift: (insertedValues...) ->
     @suppressChangeEvents = true
     result = super
     @suppressChangeEvents = false
-    @emit 'changed', {index: 0, removedValues: [], insertedValues}
+    @emitChanged {index: 0, removedValues: [], insertedValues}
+    result
+
+  shift: ->
+    @suppressChangeEvents = true
+    result = super
+    @suppressChangeEvents = false
+    @emitChanged {index: 0, removedValues: [result], insertedValues: []}
     result
 
   setLength: (length) ->
@@ -52,16 +59,19 @@ class Sequence extends Array
       removedValues = @[index..]
       insertedValues = []
       @length = length
-      @emit 'changed', {index, removedValues, insertedValues}
+      @emitChanged {index, removedValues, insertedValues}
     else if length > @length
       index = @length
       removedValues = []
       @length = length
       insertedValues = @[index..]
-      @emit 'changed', {index, removedValues, insertedValues}
+      @emitChanged {index, removedValues, insertedValues}
 
   isEqual: (other) ->
     (this is other) or isEqual((v for v in this), (v for v in other))
+
+  emitChanged: (event) ->
+    @emit 'changed', event unless @suppressChangeEvents
 
 SequenceProxyHandler =
   set: (target, name, value) ->
