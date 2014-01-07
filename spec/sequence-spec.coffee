@@ -14,6 +14,10 @@ describe "Sequence", ->
     expect(sequence instanceof Sequence).toBe true
     expect(sequence instanceof Array).toBe true
 
+  describe ".fromArray", ->
+    it "constructs a sequence from the given array", ->
+      expect(Sequence.fromArray(['a', 'b', 'c'])).toEqual ['a', 'b', 'c']
+
   describe "property access via ::[]", ->
     it "allows sequence elements to be read via numeric keys", ->
       expect(sequence[0]).toBe 'a'

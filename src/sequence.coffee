@@ -8,9 +8,13 @@ class Sequence extends Array
 
   suppressChangeEvents: false
 
+  @fromArray: (array) ->
+    array = array.slice()
+    array.__proto__ = @prototype
+    return Proxy(array, SequenceProxyHandler)
+
   constructor: (elements...) ->
-    elements.__proto__ = Sequence.prototype
-    return Proxy(elements, SequenceProxyHandler)
+    return Sequence.fromArray(elements)
 
   set: (index, value) ->
     if index >= @length
