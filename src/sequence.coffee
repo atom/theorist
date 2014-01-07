@@ -22,12 +22,20 @@ class Sequence extends Array
       insertedValues = [value]
       @[index] = value
 
-    @emit 'changed', {index, removedValues, insertedValues}
+    @emit 'changed', {index, removedValues, insertedValues} unless @suppressSetEvents
 
   splice: (index, count, insertedValues...) ->
     removedValues = super
     @emit 'changed', {index, removedValues, insertedValues}
     removedValues
+
+  push: (insertedValues...) ->
+    index = @length
+    @suppressSetEvents = true
+    result = super
+    @suppressSetEvents = false
+    @emit 'changed', {index, removedValues: [], insertedValues}
+    result
 
   setLength: (length) ->
     if length < @length

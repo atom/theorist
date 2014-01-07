@@ -80,3 +80,14 @@ describe "Sequence", ->
         removedValues: ['d', 'e']
         insertedValues: ['D', 'E', 'F']
       }]
+
+  describe "::push", ->
+    it "pushes to the sequence and emits a 'changed' event", ->
+      result = sequence.push('X', 'Y', 'Z')
+      expect(result).toBe 10
+      expect(sequence).toEqual "abcdefgXYZ".split('')
+      expect(changes).toEqual [{
+        index: 7
+        removedValues: []
+        insertedValues: ['X', 'Y', 'Z']
+      }]
