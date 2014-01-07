@@ -6,6 +6,8 @@ module.exports =
 class Sequence extends Array
   Emitter.includeInto(this)
 
+  suppressChangeEvents: false
+
   constructor: (elements...) ->
     elements.__proto__ = Sequence.prototype
     return Proxy(elements, SequenceProxyHandler)
@@ -22,7 +24,7 @@ class Sequence extends Array
       insertedValues = [value]
       @[index] = value
 
-    @emit 'changed', {index, removedValues, insertedValues} unless @suppressSetEvents
+    @emit 'changed', {index, removedValues, insertedValues} unless @suppressChangeEvents
 
   splice: (index, count, insertedValues...) ->
     removedValues = super
@@ -31,10 +33,17 @@ class Sequence extends Array
 
   push: (insertedValues...) ->
     index = @length
-    @suppressSetEvents = true
+    @suppressChangeEvents = true
     result = super
-    @suppressSetEvents = false
+    @suppressChangeEvents = false
     @emit 'changed', {index, removedValues: [], insertedValues}
+    result
+
+  unshift: (insertedValues...) ->
+    @suppressChangeEvents = true
+    result = super
+    @suppressChangeEvents = false
+    @emit 'changed', {index: 0, removedValues: [], insertedValues}
     result
 
   setLength: (length) ->

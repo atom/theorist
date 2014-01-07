@@ -102,3 +102,14 @@ describe "Sequence", ->
         removedValues: ['g']
         insertedValues: []
       }]
+
+  describe "::unshift", ->
+    it "unshifts to the sequence and emits a 'changed' event", ->
+      result = sequence.unshift('X', 'Y', 'Z')
+      expect(result).toBe 10
+      expect(sequence).toEqual "XYZabcdefg".split('')
+      expect(changes).toEqual [{
+        index: 0
+        removedValues: []
+        insertedValues: ['X', 'Y', 'Z']
+      }]
