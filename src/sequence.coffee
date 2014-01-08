@@ -1,10 +1,12 @@
 require 'harmony-reflect'
 isEqual = require 'tantamount'
 {Emitter} = require 'emissary'
+PropertyAccessors = require 'property-accessors'
 
 module.exports =
 class Sequence extends Array
   Emitter.includeInto(this)
+  PropertyAccessors.includeInto(this)
 
   suppressChangeEvents: false
 
@@ -72,6 +74,9 @@ class Sequence extends Array
     @forEach(callback)
     @on 'changed', ({insertedValues}) ->
       insertedValues.forEach(callback)
+
+  @::lazyAccessor '$length', ->
+    @signal('changed').map(=> @length).toBehavior(@length)
 
   setLength: (length) ->
     if length < @length

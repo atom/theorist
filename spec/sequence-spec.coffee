@@ -69,6 +69,16 @@ describe "Sequence", ->
           insertedValues: [undefined, undefined]
         }]
 
+  describe "::$length", ->
+    it "returns a behavior based on the current length of the array", ->
+      lengths = []
+      sequence.$length.onValue (l) -> lengths.push(l)
+
+      expect(lengths).toEqual [7]
+      sequence.push('X')
+      sequence.splice(2, 3, 'Y')
+      expect(lengths).toEqual [7, 8, 6]
+
   describe "iteration", ->
     it "can iterate over the sequence with standard coffee-script syntax", ->
       values = (value for value in sequence)
