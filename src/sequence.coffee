@@ -65,6 +65,9 @@ class Sequence extends Array
     @emitChanged {index: 0, removedValues: [result], insertedValues: []}
     result
 
+  isEqual: (other) ->
+    (this is other) or isEqual((v for v in this), (v for v in other))
+
   setLength: (length) ->
     if length < @length
       index = length
@@ -78,9 +81,6 @@ class Sequence extends Array
       @length = length
       insertedValues = @[index..]
       @emitChanged {index, removedValues, insertedValues}
-
-  isEqual: (other) ->
-    (this is other) or isEqual((v for v in this), (v for v in other))
 
   emitChanged: (event) ->
     @emit 'changed', event unless @suppressChangeEvents
