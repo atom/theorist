@@ -148,3 +148,11 @@ describe "Sequence", ->
       sequence.push('H', 'I')
       sequence.splice(2, 2, 'X')
       expect(values).toEqual "abcdefgHIX".split('')
+
+  describe "::onRemoval", ->
+    it "calls the given callback with each element that's removed from the array", ->
+      values = []
+      sequence.onRemoval (v) -> values.push(v)
+      sequence.splice(2, 2, 'X')
+      sequence.splice(5, 1)
+      expect(values).toEqual ['c', 'd', 'g']

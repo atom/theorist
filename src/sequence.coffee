@@ -75,6 +75,10 @@ class Sequence extends Array
     @on 'changed', ({insertedValues}) ->
       insertedValues.forEach(callback)
 
+  onRemoval: (callback) ->
+    @on 'changed', ({removedValues}) ->
+      removedValues.forEach(callback)
+
   @::lazyAccessor '$length', ->
     @signal('changed').map(=> @length).distinctUntilChanged().toBehavior(@length)
 
