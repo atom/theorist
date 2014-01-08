@@ -77,6 +77,7 @@ describe "Sequence", ->
       expect(lengths).toEqual [7]
       sequence.push('X')
       sequence.splice(2, 3, 'Y')
+      sequence.splice(0, 1, 'Z')
       expect(lengths).toEqual [7, 8, 6]
 
   describe "iteration", ->

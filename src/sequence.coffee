@@ -76,7 +76,7 @@ class Sequence extends Array
       insertedValues.forEach(callback)
 
   @::lazyAccessor '$length', ->
-    @signal('changed').map(=> @length).toBehavior(@length)
+    @signal('changed').map(=> @length).distinctUntilChanged().toBehavior(@length)
 
   setLength: (length) ->
     if length < @length
