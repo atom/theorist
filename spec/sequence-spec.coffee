@@ -143,11 +143,18 @@ describe "Sequence", ->
   describe "::onEach", ->
     it "calls the given callback for all current and future elements in the array", ->
       values = []
-      sequence.onEach (v) -> values.push(v)
+      indices = []
+      sequence.onEach (v, i) -> values.push(v); indices.push(i)
       expect(values).toEqual "abcdefg".split('')
+      expect(indices).toEqual [0..6]
+
+      values = []
+      indices = []
+
       sequence.push('H', 'I')
       sequence.splice(2, 2, 'X')
-      expect(values).toEqual "abcdefgHIX".split('')
+      expect(values).toEqual ['H', 'I', 'X']
+      expect(indices).toEqual [7, 8, 2]
 
   describe "::onRemoval", ->
     it "calls the given callback with each element that's removed from the array", ->

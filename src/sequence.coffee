@@ -72,8 +72,9 @@ class Sequence extends Array
 
   onEach: (callback) ->
     @forEach(callback)
-    @on 'changed', ({insertedValues}) ->
-      insertedValues.forEach(callback)
+    @on 'changed', ({index, insertedValues}) ->
+      insertedValues.forEach (value, i) ->
+        callback(value, index + i)
 
   onRemoval: (callback) ->
     @on 'changed', ({removedValues}) ->
