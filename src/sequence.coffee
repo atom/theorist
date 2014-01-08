@@ -11,6 +11,7 @@ class Sequence extends Array
   @fromArray: (array) ->
     array = array.slice()
     array.__proto__ = @prototype
+    array.__boundMethods__ = {}
     return Proxy(array, SequenceProxyHandler)
 
   constructor: (elements...) ->
@@ -84,6 +85,13 @@ class Sequence extends Array
   emitChanged: (event) ->
     @emit 'changed', event unless @suppressChangeEvents
 
+# Some array methods segfault the VM if they are called on a proxy rather than a
+# true array object. To guard aginst this, the proxy will return a function
+# that's bound to the sequence itself for any property on the array prototype.
+ArrayMethods = {}
+for name in Object.getOwnPropertyNames(Array::)
+  ArrayMethods[name] = true if typeof Array::[name] is 'function'
+
 SequenceProxyHandler =
   set: (target, name, value) ->
     if name is 'length'
@@ -96,8 +104,7 @@ SequenceProxyHandler =
         target.set(index, value)
 
   get: (target, name) ->
-    # ::splice must be bound to actual target to avoid segfaults
-    if name is 'splice'
-      target.splice.bind(target)
+    if ArrayMethods[name]
+      target.__boundMethods__[name] ?= target[name].bind(target)
     else
       target[name]
