@@ -1,4 +1,4 @@
-{Behavior} = require 'emissary'
+{Behavior, Signal} = require 'emissary'
 Model = require '../src/model'
 
 describe "Model", ->
@@ -123,3 +123,29 @@ describe "Model", ->
       expect(model.destroyedCallCount).toBe 1
       expect(destroyedHandler.callCount).toBe 1
       expect(emitter.getSubscriptionCount()).toBe 0
+
+  describe "::when(signal, callback)", ->
+    describe "when called with a callback", ->
+      it "calls the callback when the signal yields a truthy value", ->
+        signal = new Signal
+        model = new Model
+        model.when signal, callback = jasmine.createSpy("callback").andCallFake -> expect(this).toBe model
+        signal.emitValue(0)
+        signal.emitValue(null)
+        signal.emitValue('')
+        expect(callback.callCount).toBe 0
+        signal.emitValue(1)
+        expect(callback.callCount).toBe 1
+
+    describe "when called with a method name", ->
+      it "calls the named method when the signal yields a truthy value", ->
+        signal = new Signal
+        model = new Model
+        model.action = jasmine.createSpy("action")
+        model.when signal, 'action'
+        signal.emitValue(0)
+        signal.emitValue(null)
+        signal.emitValue('')
+        expect(model.action.callCount).toBe 0
+        signal.emitValue(1)
+        expect(model.action.callCount).toBe 1

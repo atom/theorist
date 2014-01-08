@@ -101,6 +101,14 @@ class Model
       else if @constructor.hasDeclaredBehavior(name)
         @behaviors[name] = @constructor.evaluateDeclaredBehavior(name, this).retain()
 
+  when: (signal, action) ->
+    @subscribe signal, (value) =>
+      if value
+        if typeof action is 'function'
+          action.call(this)
+        else
+          this[action]()
+
   destroy: ->
     return unless @isAlive()
     @alive = false
