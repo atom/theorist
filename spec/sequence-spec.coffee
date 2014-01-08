@@ -128,3 +128,12 @@ describe "Sequence", ->
         removedValues: ['a']
         insertedValues: []
       }]
+
+  describe "::onEach", ->
+    it "calls the given callback for all current and future elements in the array", ->
+      values = []
+      sequence.onEach (v) -> values.push(v)
+      expect(values).toEqual "abcdefg".split('')
+      sequence.push('H', 'I')
+      sequence.splice(2, 2, 'X')
+      expect(values).toEqual "abcdefgHIX".split('')

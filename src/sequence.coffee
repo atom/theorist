@@ -68,6 +68,11 @@ class Sequence extends Array
   isEqual: (other) ->
     (this is other) or isEqual((v for v in this), (v for v in other))
 
+  onEach: (callback) ->
+    @forEach(callback)
+    @on 'changed', ({insertedValues}) ->
+      insertedValues.forEach(callback)
+
   setLength: (length) ->
     if length < @length
       index = length
