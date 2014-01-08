@@ -43,6 +43,13 @@ class Sequence extends Array
     @emitChanged {index, removedValues: [], insertedValues}
     result
 
+  pop: ->
+    @suppressChangeEvents = true
+    result = super
+    @suppressChangeEvents = false
+    @emitChanged {index: @length, removedValues: [result], insertedValues: []}
+    result
+
   unshift: (insertedValues...) ->
     @suppressChangeEvents = true
     result = super
