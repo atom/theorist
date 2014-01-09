@@ -159,7 +159,9 @@ describe "Sequence", ->
   describe "::onRemoval", ->
     it "calls the given callback with each element that's removed from the array", ->
       values = []
-      sequence.onRemoval (v) -> values.push(v)
+      indices = []
+      sequence.onRemoval (v, i) -> values.push(v); indices.push(i)
       sequence.splice(2, 2, 'X')
       sequence.splice(5, 1)
       expect(values).toEqual ['c', 'd', 'g']
+      expect(indices).toEqual [2, 2, 5]
