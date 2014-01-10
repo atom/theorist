@@ -26,6 +26,19 @@ describe "Model", ->
       expect(model.bar).toBe 2
       expect(model.baz).toBe 3
 
+    it "does not assign default values over existing values", ->
+      class TestModel extends Model
+        bar: 3
+        @properties
+          foo: 1
+          bar: 2
+
+      model = Object.create(TestModel.prototype)
+      model.bar = 3
+      TestModel.call(model)
+      expect(model.foo).toBe 1
+      expect(model.bar).toBe 3
+
     it "evaluates default values lazily if the constructor is overridden", ->
       class TestModel extends Model
         @properties

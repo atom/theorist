@@ -58,7 +58,7 @@ class Model
       if params?.hasOwnProperty(propertyName)
         @set(propertyName, params[propertyName])
       else
-        @setDefault(propertyName)
+        @setDefault(propertyName) unless @get(propertyName, true)?
 
   assignId: (id) ->
     @id ?= id ? nextInstanceId++
