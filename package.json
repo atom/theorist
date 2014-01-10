@@ -21,7 +21,7 @@
     }
   ],
   "dependencies": {
-    "emissary": "~0.29.0",
+    "emissary": "~0.30.0",
     "tantamount": "~0.8.0",
     "property-accessors": "~0.1.0",
     "delegato": "~0.4.0",
