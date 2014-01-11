@@ -23,7 +23,8 @@ describe "Sequence", ->
       expect(sequence[0]).toBe 'a'
       expect(sequence['1']).toBe 'b'
 
-    it "updates the sequence and emits 'changed' events when assigning elements via numeric keys", ->
+    # This can be enabled when harmony proxies are stable when proxying arrays
+    xit "updates the sequence and emits 'changed' events when assigning elements via numeric keys", ->
       sequence[2] = 'C'
       expect(sequence).toEqual "abCdefg".split('')
       expect(changes).toEqual [{
@@ -49,7 +50,8 @@ describe "Sequence", ->
     it "returns the current length of the sequence", ->
       expect(sequence.length).toBe 7
 
-    describe "when assigning a value shorter than the current length", ->
+    # This can be enabled when harmony proxies are stable when proxying arrays
+    xdescribe "when assigning a value shorter than the current length", ->
       it "truncates the sequence and emits a 'changed' event", ->
         sequence.length = 4
         expect(sequence).toEqual "abcd".split('')
@@ -59,7 +61,8 @@ describe "Sequence", ->
           insertedValues: []
         }]
 
-    describe "when assigning a value greater than the current length", ->
+    # This can be enabled when harmony proxies are stable when proxying arrays
+    xdescribe "when assigning a value greater than the current length", ->
       it "expands the sequence and emits a 'changed' event'", ->
         sequence.length = 9
         expect(sequence).toEqual "abcdefg".split('').concat([undefined, undefined])
