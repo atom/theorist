@@ -113,6 +113,10 @@ describe "Model", ->
       expect(model1.id).toBe 22
       expect(model2.id).toBe 33
 
+      # auto-generates a higher id than what was explicitly assigned
+      model3 = new Model
+      expect(model3.id).toBe 34
+
   describe "::destroy()", ->
     it "marks the model as no longer alive, unsubscribes, calls an optional destroyed hook, and emits a 'destroyed' event", ->
       class TestModel extends Model

@@ -12,6 +12,8 @@ class Model
   PropertyAccessors.includeInto(this)
   Delegator.includeInto(this)
 
+  @resetNextInstanceId: -> nextInstanceId = 1
+
   @properties: (args...) ->
     if typeof args[0] is 'object'
       @property name, defaultValue for name, defaultValue of args[0]
@@ -90,6 +92,9 @@ class Model
           @[name] = value
         @behaviors?[name]?.emitValue(value)
       value
+
+  @::advisedAccessor 'id',
+    set: (id) -> nextInstanceId = id + 1 if id >= nextInstanceId
 
   behavior: (name) ->
     @behaviors ?= {}
