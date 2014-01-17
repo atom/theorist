@@ -1,7 +1,7 @@
 {Behavior, Subscriber, Emitter} = require 'emissary'
 PropertyAccessors = require 'property-accessors'
 Delegator = require 'delegato'
-isEqual = require 'tantamount'
+{isEqual} = require 'underscore-plus'
 
 nextInstanceId = 1
 

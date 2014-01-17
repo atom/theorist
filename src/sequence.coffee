@@ -1,4 +1,4 @@
-isEqual = require 'tantamount'
+{isEqual} = require 'underscore-plus'
 {Emitter} = require 'emissary'
 PropertyAccessors = require 'property-accessors'
 
