@@ -1,7 +1,6 @@
 {Behavior, Subscriber, Emitter} = require 'emissary'
 PropertyAccessors = require 'property-accessors'
 Delegator = require 'delegato'
-{isEqual} = require 'underscore-plus'
 
 nextInstanceId = 1
 
@@ -84,7 +83,7 @@ class Model
       @set(name, value) for name, value of properties
       properties
     else
-      unless isEqual(@get(name, true), value)
+      unless @get(name, true) is value
         if @constructor.hasDeclaredProperty(name)
           @declaredPropertyValues ?= {}
           @declaredPropertyValues[name] = value
