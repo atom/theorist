@@ -1,7 +1,5 @@
 Sequence = require '../src/sequence'
 
-{isEqual} = require 'underscore-plus'
-
 describe "Sequence", ->
   [sequence, changes] = []
 
