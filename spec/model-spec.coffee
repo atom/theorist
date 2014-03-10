@@ -26,6 +26,25 @@ describe "Model", ->
       expect(model.bar).toBe 2
       expect(model.baz).toBe 3
 
+    it "clones non-scalar default values", ->
+      class TestModel extends Model
+        @properties
+          foo: [1]
+          bar: {a: 2}
+
+      model1 = new TestModel
+      model2 = new TestModel
+
+      model1.foo.push(2)
+      model2.foo.push(0)
+      model1.bar.b = 3
+      model2.bar.b = 0
+
+      expect(model1.foo).toEqual [1, 2]
+      expect(model2.foo).toEqual [1, 0]
+      expect(model1.bar).toEqual {a: 2, b: 3}
+      expect(model2.bar).toEqual {a: 2, b: 0}
+
     it "does not assign default values over existing values", ->
       class TestModel extends Model
         bar: 3

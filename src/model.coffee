@@ -1,6 +1,7 @@
 {Behavior, Subscriber, Emitter} = require 'emissary'
 PropertyAccessors = require 'property-accessors'
 Delegator = require 'delegato'
+{clone} = require 'underscore-plus'
 
 nextInstanceId = 1
 
@@ -66,7 +67,11 @@ class Model
 
   setDefault: (name) ->
     defaultValue = @constructor.declaredProperties?[name]
-    defaultValue = defaultValue.call(this) if typeof defaultValue is 'function'
+    switch typeof defaultValue
+      when 'function'
+        defaultValue = defaultValue.call(this)
+      when 'array', 'object'
+        defaultValue = clone(defaultValue)
     @set(name, defaultValue)
 
   get: (name, suppressDefault) ->
