@@ -4,7 +4,7 @@
   "description": "A reactive model toolkit.",
   "main": "./lib/theorist",
   "scripts": {
-    "prepublish": "grunt clean lint coffee",
+    "prepublish": "grunt clean lint coffee atomdoc",
     "test": "grunt test"
   },
   "repository": {
@@ -35,6 +35,7 @@
     "grunt-shell": "~0.2.2",
     "grunt-coffeelint": "0.0.6",
     "rimraf": "~2.2.2",
-    "coffee-cache": "~0.2.0"
+    "coffee-cache": "~0.2.0",
+    "grunt-atomdoc": "^0.2.0"
   }
 }
