@@ -1,6 +1,6 @@
 {
   "name": "theorist",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A reactive model toolkit.",
   "main": "./lib/theorist",
   "scripts": {
